@@ -7,15 +7,19 @@
 package termgow
 
 import (
-	"github.com/peekmo/termbox-go"
+	"errors"
+	"github.com/nsf/termbox-go"
 )
+
+var program *Program
 
 /**
  * General informations about the program
  */
 type Program struct {
-	IsRunning bool
-	windows   []*Window
+	IsRunning bool            // If the program is currently running or not
+	windows   map[int]*Window // All windows added to the program (showed or not) (key : window id)
+	showed    map[int]*Window // Only showed windows (key : priority)
 }
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
@@ -24,12 +28,18 @@ type Program struct {
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
 func NewProgram() (*Program, error) {
+	if program != nil && program.IsRunning {
+		return nil, errors.New("A program is already running")
+	}
+
 	err := termbox.Init()
 	if err != nil {
 		return nil, err
 	}
 
-	return &Program{IsRunning: false}, nil
+	program = &Program{IsRunning: false, windows: make(map[int]*Window), showed: make(map[int]*Window)}
+
+	return program, nil
 }
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
@@ -41,6 +51,10 @@ func (p *Program) Run() {
 	p.IsRunning = true
 
 	for p.IsRunning {
+		for _, win := range p.showed {
+			win.draw()
+		}
+
 		switch ev := termbox.PollEvent(); ev.Type {
 		case termbox.EventKey:
 			switch ev.Key {
@@ -63,4 +77,65 @@ func (p *Program) Close() {
 	if termbox.IsInit {
 		termbox.Close()
 	}
+}
+
+/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
+
+  AddWindow adds a new window to the set of window to print
+
+*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+func (p *Program) AddWindow(win *Window) {
+	p.windows[win.id] = win
+	p.show(win)
+}
+
+/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
+
+  RemoveWindow removes a window from the program
+
+*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+func (p *Program) RemoveWindow(win *Window) {
+	if win.priority != -1 {
+		p.hide(win)
+	}
+
+	delete(p.windows, win.id)
+}
+
+/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
+
+  hide is a function to removes the given window from the showed ones
+
+*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+func (p *Program) hide(win *Window) {
+	delete(p.showed, win.priority)
+
+	for i := win.priority + 1; i < len(p.showed); i++ {
+		p.showed[i-1] = p.showed[i]
+	}
+
+	delete(p.showed, len(p.showed))
+}
+
+/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
+
+  show adds the given window to the showed ones
+  If already showed, its priority will be increase
+
+  If the window is not in the window's list, an error will be returned
+
+*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+func (p *Program) show(win *Window) error {
+	if p.windows[win.id] == nil {
+		return errors.New("This window does not exists")
+	}
+
+	if win.priority != -1 {
+		p.hide(win)
+	}
+
+	win.priority = len(p.showed) + 1
+	p.showed[win.priority] = win
+
+	return nil
 }
