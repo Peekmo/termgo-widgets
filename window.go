@@ -53,10 +53,8 @@ func NewWindow() *Window {
   SetSize changes windows's width & height value
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func (w *Window) SetSize(width, height int) *Window {
+func (w *Window) SetSize(width, height int) {
 	w.Width, w.Height = width, height
-
-	return w
 }
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
@@ -85,7 +83,7 @@ func (w *Window) SetForeground(color termbox.Attribute) {
 func (w *Window) draw() {
 	for x := 0; x < w.Width; x++ {
 		for y := 0; y < w.Height; y++ {
-			termbox.SetCell(x, y, 'X', w.foreground, w.background)
+			termbox.SetCell(x, y, 'x', w.foreground, w.background)
 		}
 	}
 
@@ -104,8 +102,7 @@ func (w *Window) Hide() error {
 		return errors.New("The program does not exists")
 	}
 
-	program.hide(w)
-	return nil
+	return program.hide(w)
 }
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*

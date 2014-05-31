@@ -106,8 +106,14 @@ func (p *Program) RemoveWindow(win *Window) {
 
   hide is a function to removes the given window from the showed ones
 
+  Returns an error if the window is not a part of the program
+
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func (p *Program) hide(win *Window) {
+func (p *Program) hide(win *Window) error {
+	if p.windows[win.id] == nil {
+		return errors.New("This window does not exists")
+	}
+
 	delete(p.showed, win.priority)
 
 	for i := win.priority + 1; i < len(p.showed); i++ {
@@ -115,6 +121,7 @@ func (p *Program) hide(win *Window) {
 	}
 
 	delete(p.showed, len(p.showed))
+	return nil
 }
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
