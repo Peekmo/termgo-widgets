@@ -82,24 +82,37 @@ func (p *Program) Close() {
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
 
   AddWindow adds a new window to the set of window to print
+  An error is returned if the window already exists
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func (p *Program) AddWindow(win *Window) {
+func (p *Program) AddWindow(win *Window) error {
+	if p.windows[win.id] != nil {
+		return errors.New("This window is already added")
+	}
+
 	p.windows[win.id] = win
-	p.show(win)
+	err := win.Show()
+
+	return err
 }
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
 
   RemoveWindow removes a window from the program
+  An error is returned if the window does not exists
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func (p *Program) RemoveWindow(win *Window) {
+func (p *Program) RemoveWindow(win *Window) error {
+	if p.windows[win.id] == nil {
+		return errors.New("This window is not in the program")
+	}
+
 	if win.priority != -1 {
-		p.hide(win)
+		win.Hide()
 	}
 
 	delete(p.windows, win.id)
+	return nil
 }
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
@@ -138,7 +151,7 @@ func (p *Program) show(win *Window) error {
 	}
 
 	if win.priority != -1 {
-		p.hide(win)
+		win.Hide()
 	}
 
 	win.priority = len(p.showed) + 1

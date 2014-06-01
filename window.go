@@ -27,7 +27,7 @@ type Window struct {
 }
 
 var (
-	id int = 1 // Current window id value
+	windowId int = 1 // Current window id value
 )
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
@@ -39,12 +39,13 @@ func NewWindow() *Window {
 	var win Window
 	win.Width, win.Height = termbox.Size()
 
-	win.id = id
+	win.id = windowId
+	win.priority = -1
 
 	win.foreground = colors.Default
 	win.background = colors.Default
 
-	id++
+	windowId++
 	return &win
 }
 
@@ -102,7 +103,13 @@ func (w *Window) Hide() error {
 		return errors.New("The program does not exists")
 	}
 
-	return program.hide(w)
+	err := program.hide(w)
+	if err != nil {
+		return err
+	}
+
+	w.priority = -1
+	return nil
 }
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*

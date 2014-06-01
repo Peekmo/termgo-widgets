@@ -14,7 +14,7 @@ const (
 	Default = termbox.ColorDefault
 	Black   = termbox.ColorBlack
 	Red     = termbox.ColorRed
-	Green   = termbox.ColorRed
+	Green   = termbox.ColorGreen
 	Yellow  = termbox.ColorYellow
 	Blue    = termbox.ColorBlue
 	Magenta = termbox.ColorMagenta

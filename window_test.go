@@ -13,6 +13,7 @@ import (
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
 func TestNewWindow(t *testing.T) {
+	windowId = 1
 	w := NewWindow()
 
 	x, y := termbox.Size()
@@ -25,7 +26,7 @@ func TestNewWindow(t *testing.T) {
 	}
 
 	if w.id != 1 {
-		t.Error("Window id is not initialized")
+		t.Errorf("Window id is not initialized (id %d)", w.id)
 	}
 }
 
@@ -35,6 +36,7 @@ func TestNewWindow(t *testing.T) {
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
 func TestNewWindowIdIncrement(t *testing.T) {
+	windowId = 1
 	w1, w2 := NewWindow(), NewWindow()
 
 	if w2.id == w1.id || (w2.id != 2 && w1.id != 2) {
@@ -133,14 +135,17 @@ func TestHideAndShow(t *testing.T) {
 	p.AddWindow(w)
 
 	before := len(p.showed)
-	err2 := w.Hide()
+	if before == -1 {
+		t.Error("Test is not valid anymore because we are expecting the window to be showed when addWindow is called")
+	}
 
+	err2 := w.Hide()
 	if err2 != nil {
 		t.Errorf("An error has been received during TestHide : %s", fmt.Sprint(err2))
 	}
 
-	if after := len(p.showed); before == after {
-		t.Errorf("The window seems to be showed (%d windows showed before, and %d after)", before, after)
+	if w.priority != -1 {
+		t.Errorf("The window seems to be showed (priority %d)", w.priority)
 	}
 
 	err3 := w.Show()
@@ -148,8 +153,8 @@ func TestHideAndShow(t *testing.T) {
 		t.Errorf("An error has been received during TestSHow : %s", fmt.Sprint(err3))
 	}
 
-	if after := len(p.showed); before != after {
-		t.Errorf("The window seems to be hided (%d windows showed before, and %d after)", before, after)
+	if w.priority != before {
+		t.Errorf("Show test failed (priority %d, expected %d)", w.priority, before)
 	}
 }
 
