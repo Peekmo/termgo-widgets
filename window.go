@@ -101,7 +101,7 @@ func (w *Window) draw() {
 		if x >= w.Spacing.Left && x < w.Width-w.Spacing.Right {
 			for y := 0; y < w.Height; y++ {
 				if y >= w.Spacing.Top && y < w.Height-w.Spacing.Bottom {
-					termbox.SetCell(x, y, 'x', w.foreground, w.background)
+					termbox.SetCell(x, y, ' ', w.foreground, w.background)
 				}
 			}
 		}
