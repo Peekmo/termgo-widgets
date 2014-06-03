@@ -16,17 +16,12 @@ import (
  * Window is the base of a view with termgow
  */
 type Window struct {
+	Container
+
 	id       int
 	priority int
 
-	Width   int
-	Height  int
-	Spacing *Spacing
-
 	parent *Program
-
-	foreground termbox.Attribute
-	background termbox.Attribute
 }
 
 var (
@@ -41,7 +36,7 @@ var (
 func NewWindow() *Window {
 	var win Window
 	win.Width, win.Height = termbox.Size()
-	win.Spacing = &Spacing{0, 0, 0, 0}
+	win.spacing = &Spacing{0, 0, 0, 0}
 
 	win.id = windowId
 	win.priority = -1
@@ -51,65 +46,6 @@ func NewWindow() *Window {
 
 	windowId++
 	return &win
-}
-
-/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
-
-  SetSize changes windows's width & height value
-
-*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func (w *Window) SetSize(width, height int) {
-	w.Width, w.Height = width, height
-}
-
-/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
-
-  SetSpacing sets the spacing (in terms of chars) for every bounds
-  of the window
-
-  Note : If an element has a specified x/y pos, the spacing will not
-  be considered
-
-*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func (w *Window) SetSpacing(s *Spacing) {
-	w.Spacing = s
-}
-
-/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
-
-  SetBackground changes background's color
-
-*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func (w *Window) SetBackground(color termbox.Attribute) {
-	w.background = color
-}
-
-/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
-
-  SetForeground sets foreground's color (characters)
-
-*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func (w *Window) SetForeground(color termbox.Attribute) {
-	w.foreground = color
-}
-
-/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
-
-  Draw the window
-
-*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func (w *Window) draw() {
-	for x := 0; x < w.Width; x++ {
-		if x >= w.Spacing.Left && x < w.Width-w.Spacing.Right {
-			for y := 0; y < w.Height; y++ {
-				if y >= w.Spacing.Top && y < w.Height-w.Spacing.Bottom {
-					termbox.SetCell(x, y, ' ', w.foreground, w.background)
-				}
-			}
-		}
-	}
-
-	termbox.Flush()
 }
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*

@@ -29,7 +29,7 @@ func TestNewWindow(t *testing.T) {
 		t.Errorf("Window id is not initialized (id %d)", w.id)
 	}
 
-	if w.Spacing == nil {
+	if w.spacing == nil {
 		t.Error("Spacing is not init")
 	}
 }
@@ -71,9 +71,9 @@ func TestWindowSetSpacing(t *testing.T) {
 	w := NewWindow()
 	w.SetSpacing(&Spacing{Left: 1, Top: 2, Right: 3, Bottom: 4})
 
-	if w.Spacing.Left != 1 || w.Spacing.Top != 2 || w.Spacing.Right != 3 || w.Spacing.Bottom != 4 {
-		t.Errorf("SetSize error (%d, %d, %d, %d), expected (1,2,3,4)", w.Spacing.Left,
-			w.Spacing.Top, w.Spacing.Right, w.Spacing.Bottom)
+	if w.spacing.Left != 1 || w.spacing.Top != 2 || w.spacing.Right != 3 || w.spacing.Bottom != 4 {
+		t.Errorf("SetSize error (%d, %d, %d, %d), expected (1,2,3,4)", w.spacing.Left,
+			w.spacing.Top, w.spacing.Right, w.spacing.Bottom)
 	}
 }
 

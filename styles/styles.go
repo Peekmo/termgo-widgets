@@ -11,7 +11,7 @@ type BorderStyle struct {
 	LeftBottomCorner  rune
 }
 
-const (
+var (
 	BorderSlimLinear *BorderStyle = &BorderStyle{'│', '┌', '─', '┐', '│', '┘', '─', '└'}
 	BorderDashed     *BorderStyle = &BorderStyle{'|', '+', '-', '+', '|', '+', '-', '+'}
 )
