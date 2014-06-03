@@ -182,7 +182,7 @@ func TestHideAndShow(t *testing.T) {
   Gets an error on hiding a window without a program instance
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func TestHideFailNoProg(t *testing.T) {
+func TestHide_FailNoProg(t *testing.T) {
 	w := NewWindow()
 	err := w.Hide()
 
@@ -196,7 +196,7 @@ func TestHideFailNoProg(t *testing.T) {
   Gets an error on hiding window which is not a part of the program
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func TestHideFailNotAdded(t *testing.T) {
+func TestHide_FailNotAdded(t *testing.T) {
 	p, err := NewProgram()
 	if err != nil {
 		t.Error("Unable to start termbox")
@@ -217,7 +217,7 @@ func TestHideFailNotAdded(t *testing.T) {
   Gets an error on hiding a window without a program instance
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func TestShowFailNoProg(t *testing.T) {
+func TestShow_FailNoProg(t *testing.T) {
 	w := NewWindow()
 	err := w.Show()
 
@@ -231,7 +231,7 @@ func TestShowFailNoProg(t *testing.T) {
   Gets an error on hiding window which is not a part of the program
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func TestShowFailNotAdded(t *testing.T) {
+func TestShow_FailNotAdded(t *testing.T) {
 	p, err := NewProgram()
 	if err != nil {
 		t.Error("Unable to start termbox")

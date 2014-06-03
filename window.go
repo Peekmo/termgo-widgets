@@ -23,6 +23,8 @@ type Window struct {
 	Height  int
 	Spacing *Spacing
 
+	parent *Program
+
 	foreground termbox.Attribute
 	background termbox.Attribute
 }
@@ -118,8 +120,8 @@ func (w *Window) draw() {
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
 func (w *Window) Hide() error {
-	if program == nil {
-		return errors.New("The program does not exists")
+	if w.parent == nil {
+		return errors.New("The window does not have any parent")
 	}
 
 	err := program.hide(w)
@@ -141,8 +143,8 @@ func (w *Window) Hide() error {
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
 func (w *Window) Show() error {
-	if program == nil {
-		return errors.New("The program does not exists")
+	if w.parent == nil {
+		return errors.New("The window does not have any parent")
 	}
 
 	return program.show(w)

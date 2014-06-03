@@ -2,7 +2,6 @@ package termgow
 
 import (
 	"fmt"
-	// "github.com/nsf/termbox-go"
 	"testing"
 )
 
@@ -62,6 +61,10 @@ func TestAddWindow(t *testing.T) {
 
 	if showNumberBefore+1 != len(p.showed) {
 		t.Error("Window not successfully added to showed windows map")
+	}
+
+	if w.parent == nil {
+		t.Error("The window must have a parent when added to a program")
 	}
 }
 
@@ -163,6 +166,10 @@ func TestRemoveWindow(t *testing.T) {
 
 	if showNumberBefore-1 != len(p.showed) {
 		t.Error("Window not successfully removed from showed windows map")
+	}
+
+	if w.parent != nil {
+		t.Error("Window must not have a parent when it's removed from the program")
 	}
 }
 

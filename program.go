@@ -90,7 +90,9 @@ func (p *Program) AddWindow(win *Window) error {
 		return errors.New("This window is already added")
 	}
 
+	win.parent = p
 	p.windows[win.id] = win
+
 	err := win.Show()
 
 	return err
@@ -112,6 +114,8 @@ func (p *Program) RemoveWindow(win *Window) error {
 	}
 
 	delete(p.windows, win.id)
+	win.parent = nil
+
 	return nil
 }
 
