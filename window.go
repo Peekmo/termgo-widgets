@@ -36,7 +36,9 @@ var (
 func NewWindow() *Window {
 	var win Window
 	win.Width, win.Height = termbox.Size()
-	win.spacing = &Spacing{0, 0, 0, 0}
+
+	win.margin = &Spacing{0, 0, 0, 0}
+	win.padding = &Spacing{0, 0, 0, 0}
 
 	win.id = windowId
 	win.priority = -1

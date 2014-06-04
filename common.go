@@ -16,7 +16,10 @@ type Container struct {
 	Width  int
 	Height int
 
-	spacing     *Spacing
+	margin  *Spacing
+	padding *Spacing
+
+	hasBorder   bool
 	borderStyle *styles.BorderStyle
 
 	foreground termbox.Attribute
@@ -30,9 +33,10 @@ type Container struct {
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
 func (c *Container) draw() {
 	for x := 0; x < c.Width; x++ {
-		if x >= c.spacing.Left && x < c.Width-c.spacing.Right {
+		// Margin
+		if x >= c.margin.Left && x < c.Width-c.margin.Right {
 			for y := 0; y < c.Height; y++ {
-				if y >= c.spacing.Top && y < c.Height-c.spacing.Bottom {
+				if y >= c.margin.Top && y < c.Height-c.margin.Bottom {
 					termbox.SetCell(x, y, ' ', c.foreground, c.background)
 				}
 			}
@@ -53,15 +57,25 @@ func (c *Container) SetSize(width, height int) {
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
 
-  SetSpacing sets the spacing (in terms of chars) for every bounds
+  SetMargin sets the margin (in terms of chars) for every bounds
   of the window
 
-  Note : If an element has a specified x/y pos, the spacing will not
+  Note : If an element has a specified x/y pos, the margin will not
   be considered
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func (c *Container) SetSpacing(s *Spacing) {
-	c.spacing = s
+func (c *Container) SetMargin(s *Spacing) {
+	c.margin = s
+}
+
+/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
+
+  SetPadding sets the padding (in terms of chars) for every bounds
+  of the window
+
+*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+func (c *Container) SetPadding(s *Spacing) {
+	c.padding = s
 }
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
@@ -88,7 +102,18 @@ func (c *Container) SetForeground(color termbox.Attribute) {
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
 func (c *Container) SetBorder(style *styles.BorderStyle) {
+	c.hasBorder = true
+	c.borderStyle = style
+}
 
+/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
+
+  RemoveBorder removes the border from the container (if any)
+
+*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+func (c *Container) RemoveBorder() {
+	c.hasBorder = false
+	c.borderStyle = nil
 }
 
 type Element interface {

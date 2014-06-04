@@ -12,6 +12,7 @@ type BorderStyle struct {
 }
 
 var (
-	BorderSlimLinear *BorderStyle = &BorderStyle{'│', '┌', '─', '┐', '│', '┘', '─', '└'}
-	BorderDashed     *BorderStyle = &BorderStyle{'|', '+', '-', '+', '|', '+', '-', '+'}
+	BorderSlimLinear  *BorderStyle = &BorderStyle{'│', '┌', '─', '┐', '│', '┘', '─', '└'}
+	BorderDashed      *BorderStyle = &BorderStyle{'|', '+', '-', '+', '|', '+', '-', '+'}
+	BorderTransparent *BorderStyle = &BorderStyle{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
 )
