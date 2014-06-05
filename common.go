@@ -32,18 +32,72 @@ type Container struct {
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
 func (c *Container) draw() {
+	var printed bool = false
+
 	for x := 0; x < c.Width; x++ {
 		// Margin
 		if x >= c.margin.Left && x < c.Width-c.margin.Right {
 			for y := 0; y < c.Height; y++ {
+				printed = false
 				if y >= c.margin.Top && y < c.Height-c.margin.Bottom {
-					termbox.SetCell(x, y, ' ', c.foreground, c.background)
+					if c.hasBorder {
+						printed = c.printBorder(x, y)
+					}
+
+					if !printed {
+						termbox.SetCell(x, y, ' ', c.foreground, c.background)
+					}
 				}
 			}
 		}
 	}
 
 	termbox.Flush()
+}
+
+/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
+
+  printBorder is an internal function to print container's border
+  if needed.
+  It returns true/false if it printed something or not
+
+*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+func (c *Container) printBorder(x, y int) bool {
+	switch x {
+	case c.margin.Left:
+		switch y {
+		case c.margin.Top:
+			termbox.SetCell(x, y, c.borderStyle.LeftTopCorner, c.foreground, termbox.ColorDefault)
+		case (c.Height - c.margin.Bottom - 1):
+			termbox.SetCell(x, y, c.borderStyle.LeftBottomCorner, c.foreground, termbox.ColorDefault)
+		default:
+			termbox.SetCell(x, y, c.borderStyle.Left, c.foreground, termbox.ColorDefault)
+		}
+
+		return true
+	case (c.Width - c.margin.Right - 1):
+		switch y {
+		case c.margin.Top:
+			termbox.SetCell(x, y, c.borderStyle.RightTopCorner, c.foreground, termbox.ColorDefault)
+		case (c.Height - c.margin.Bottom - 1):
+			termbox.SetCell(x, y, c.borderStyle.RightBottomCorner, c.foreground, termbox.ColorDefault)
+		default:
+			termbox.SetCell(x, y, c.borderStyle.Right, c.foreground, termbox.ColorDefault)
+		}
+
+		return true
+	default:
+		switch y {
+		case c.margin.Top:
+			termbox.SetCell(x, y, c.borderStyle.Top, c.foreground, termbox.ColorDefault)
+			return true
+		case (c.Height - c.margin.Bottom - 1):
+			termbox.SetCell(x, y, c.borderStyle.Bottom, c.foreground, termbox.ColorDefault)
+			return true
+		}
+	}
+
+	return false
 }
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
