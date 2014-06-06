@@ -44,6 +44,10 @@ func (c *Container) draw() {
 						printed = c.printBorder(x, y)
 					}
 
+					if !printed && (c.padding.Top != 0 || c.padding.Bottom != 0 || c.padding.Left != 0 || c.padding.Right != 0) {
+						printed = c.printPadding(x, y)
+					}
+
 					if !printed {
 						termbox.SetCell(x, y, ' ', c.foreground, c.background)
 					}
@@ -97,6 +101,28 @@ func (c *Container) printBorder(x, y int) bool {
 		}
 	}
 
+	return false
+}
+
+/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
+
+  printPadding prints container's padding (if any)
+
+*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+func (c *Container) printPadding(x, y int) bool {
+	var border int = 0
+	if c.hasBorder {
+		border = 1
+	}
+
+	if c.margin.Left+border+c.padding.Left > x ||
+		c.margin.Top+border+c.padding.Top > y ||
+		c.margin.Right+border+c.padding.Right >= c.Width-x ||
+		c.margin.Bottom+border+c.padding.Bottom >= c.Height-y {
+
+		termbox.SetCell(x, y, ' ', c.foreground, termbox.ColorDefault)
+		return true
+	}
 	return false
 }
 
