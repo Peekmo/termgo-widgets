@@ -20,8 +20,6 @@ type Window struct {
 
 	id       int
 	priority int
-
-	parent *Program
 }
 
 var (
@@ -35,7 +33,7 @@ var (
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
 func NewWindow() *Window {
 	var win Window
-	win.Width, win.Height = termbox.Size()
+	win.width, win.height = termbox.Size()
 
 	win.margin = &Spacing{0, 0, 0, 0}
 	win.padding = &Spacing{0, 0, 0, 0}

@@ -17,6 +17,7 @@ var program *Program
  * General informations about the program
  */
 type Program struct {
+	Element
 	IsRunning bool            // If the program is currently running or not
 	windows   map[int]*Window // All windows added to the program (showed or not) (key : window id)
 	showed    map[int]*Window // Only showed windows (key : priority)
@@ -38,6 +39,8 @@ func NewProgram() (*Program, error) {
 	}
 
 	program = &Program{IsRunning: false, windows: make(map[int]*Window), showed: make(map[int]*Window)}
+	program.width, program.height = termbox.Size()
+	program.foreground, program.background = termbox.ColorDefault, termbox.ColorDefault
 
 	return program, nil
 }
@@ -51,6 +54,12 @@ func (p *Program) Run() {
 	p.IsRunning = true
 
 	for p.IsRunning {
+		for y := 0; y < p.height; y++ {
+			for x := 0; x < p.width; x++ {
+				termbox.SetCell(x, y, ' ', p.foreground, p.background)
+			}
+		}
+
 		for _, win := range p.showed {
 			win.draw()
 		}

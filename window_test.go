@@ -17,8 +17,8 @@ func TestNewWindow(t *testing.T) {
 	w := NewWindow()
 
 	x, y := termbox.Size()
-	if x != w.Width || y != w.Height {
-		t.Errorf("Window size failed (%d, %d), exepected (%d, %d)", w.Width, w.Height, x, y)
+	if x != w.width || y != w.height {
+		t.Errorf("Window size failed (%d, %d), exepected (%d, %d)", w.width, w.height, x, y)
 	}
 
 	if w.foreground != colors.Default || w.background != colors.Default {
@@ -49,108 +49,6 @@ func TestNewWindowIdIncrement(t *testing.T) {
 
 	if w2.id == w1.id || (w2.id != 2 && w1.id != 2) {
 		t.Error("Window id is not incremented")
-	}
-}
-
-/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
-
-  Checks the method Window.SetSize
-
-*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func TestWindowSetSize(t *testing.T) {
-	w := NewWindow()
-	w.SetSize(5, 7)
-
-	if w.Width != 5 || w.Height != 7 {
-		t.Error("SetSize error (%d, %d), expected (5, 7)", w.Width, w.Height)
-	}
-}
-
-/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
-
-  Checks the method Window.SetMargin
-
-*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func TestWindowSetMargin(t *testing.T) {
-	w := NewWindow()
-	w.SetMargin(&Spacing{Left: 1, Top: 2, Right: 3, Bottom: 4})
-
-	if w.margin.Left != 1 || w.margin.Top != 2 || w.margin.Right != 3 || w.margin.Bottom != 4 {
-		t.Errorf("SetSize error (%d, %d, %d, %d), expected (1,2,3,4)", w.margin.Left,
-			w.margin.Top, w.margin.Right, w.margin.Bottom)
-	}
-}
-
-/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
-
-  Checks the method Window.SetPadding
-
-*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func TestWindowSetPadding(t *testing.T) {
-	w := NewWindow()
-	w.SetPadding(&Spacing{Left: 1, Top: 2, Right: 3, Bottom: 4})
-
-	if w.padding.Left != 1 || w.padding.Top != 2 || w.padding.Right != 3 || w.padding.Bottom != 4 {
-		t.Errorf("SetSize error (%d, %d, %d, %d), expected (1,2,3,4)", w.padding.Left,
-			w.padding.Top, w.padding.Right, w.padding.Bottom)
-	}
-}
-
-/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
-
-  Checks Window.SetForeground
-
-*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func TestSetForeground(t *testing.T) {
-	w := NewWindow()
-	w.SetForeground(colors.Red)
-
-	if w.foreground != colors.Red {
-		t.Error("SetForeground is bugged !")
-	}
-}
-
-/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
-
-  Checks Window.SetBackground
-
-*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func TestSetBackground(t *testing.T) {
-	w := NewWindow()
-	w.SetBackground(colors.Red)
-
-	if w.background != colors.Red {
-		t.Error("SetForeground is bugged !")
-	}
-}
-
-/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
-
-  Checks Window.draw() by filling the buffer and checks every cell
-
-*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func TestDraw(t *testing.T) {
-	p, err := NewProgram()
-	if err != nil {
-		t.Error("Unable to start termbox")
-	}
-
-	defer p.Close()
-
-	w := NewWindow()
-	w.SetForeground(colors.Cyan)
-	w.SetBackground(colors.Blue)
-
-	w.draw()
-
-	for _, cell := range termbox.CellBuffer() {
-		if cell.Fg != colors.Cyan {
-			t.Error("Drawing error : FG color")
-		}
-
-		if cell.Bg != colors.Blue {
-			t.Error("Drawing error : BG color")
-		}
 	}
 }
 

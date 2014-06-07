@@ -1,5 +1,6 @@
 package styles
 
+// BorderStyle contains all elements which constitute a border
 type BorderStyle struct {
 	Left              rune
 	LeftTopCorner     rune
@@ -11,6 +12,7 @@ type BorderStyle struct {
 	LeftBottomCorner  rune
 }
 
+// Border types (for a container for example)
 var (
 	BorderSlimLinear  *BorderStyle = &BorderStyle{'│', '┌', '─', '┐', '│', '┘', '─', '└'}
 	BorderDashed      *BorderStyle = &BorderStyle{'|', '+', '-', '+', '|', '+', '-', '+'}
