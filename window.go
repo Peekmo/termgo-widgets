@@ -1,9 +1,3 @@
-/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
-
-  @author Axel Anceau - 2014
-  Package termgow allows to creates console apps faster
-
-*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
 package termgow
 
 import (
@@ -12,14 +6,16 @@ import (
 	"github.com/peekmo/termgo-widgets/colors"
 )
 
-/**
- * Window is the base of a view with termgow
- */
+/*
+  Window is the base of a view with termgow
+*/
 type Window struct {
 	Container
 
 	id       int
 	priority int
+
+	parent *Program
 }
 
 var (
@@ -60,7 +56,7 @@ func (w *Window) Hide() error {
 		return errors.New("The window does not have any parent")
 	}
 
-	err := program.hide(w)
+	err := w.parent.hide(w)
 	if err != nil {
 		return err
 	}
@@ -83,5 +79,5 @@ func (w *Window) Show() error {
 		return errors.New("The window does not have any parent")
 	}
 
-	return program.show(w)
+	return w.parent.show(w)
 }

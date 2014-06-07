@@ -13,9 +13,9 @@ import (
 
 var program *Program
 
-/**
- * General informations about the program
- */
+/*
+  General informations about the program
+*/
 type Program struct {
 	Element
 	IsRunning bool            // If the program is currently running or not
@@ -99,7 +99,7 @@ func (p *Program) AddWindow(win *Window) error {
 		return errors.New("This window is already added")
 	}
 
-	win.parent = p
+	win.parent, win.base = p, p
 	p.windows[win.id] = win
 
 	err := win.Show()
@@ -123,7 +123,7 @@ func (p *Program) RemoveWindow(win *Window) error {
 	}
 
 	delete(p.windows, win.id)
-	win.parent = nil
+	win.parent, win.base = nil, nil
 
 	return nil
 }
@@ -140,9 +140,11 @@ func (p *Program) hide(win *Window) error {
 		return errors.New("This window does not exists")
 	}
 
-	delete(p.showed, win.priority)
+	// BUG(p.hide) deleting win.priority from p.showed hides all other windows when .show() is called back
+	// delete(p.showed, win.priority)
 
-	for i := win.priority + 1; i < len(p.showed); i++ {
+	for i := win.priority + 1; i <= len(p.showed); i++ {
+		p.showed[i].priority -= 1
 		p.showed[i-1] = p.showed[i]
 	}
 

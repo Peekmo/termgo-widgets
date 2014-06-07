@@ -121,7 +121,7 @@ type Container struct {
 	hasBorder   bool
 	borderStyle *styles.BorderStyle
 
-	parent Basic
+	base Basic
 }
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
@@ -169,32 +169,32 @@ func (c *Container) printBorder(x, y int) bool {
 	case c.margin.Left:
 		switch y {
 		case c.margin.Top:
-			termbox.SetCell(x, y, c.borderStyle.LeftTopCorner, c.foreground, c.parent.GetBackground())
+			termbox.SetCell(x, y, c.borderStyle.LeftTopCorner, c.foreground, c.base.GetBackground())
 		case (c.height - c.margin.Bottom - 1):
-			termbox.SetCell(x, y, c.borderStyle.LeftBottomCorner, c.foreground, c.parent.GetBackground())
+			termbox.SetCell(x, y, c.borderStyle.LeftBottomCorner, c.foreground, c.base.GetBackground())
 		default:
-			termbox.SetCell(x, y, c.borderStyle.Left, c.foreground, c.parent.GetBackground())
+			termbox.SetCell(x, y, c.borderStyle.Left, c.foreground, c.base.GetBackground())
 		}
 
 		return true
 	case (c.width - c.margin.Right - 1):
 		switch y {
 		case c.margin.Top:
-			termbox.SetCell(x, y, c.borderStyle.RightTopCorner, c.foreground, c.parent.GetBackground())
+			termbox.SetCell(x, y, c.borderStyle.RightTopCorner, c.foreground, c.base.GetBackground())
 		case (c.height - c.margin.Bottom - 1):
-			termbox.SetCell(x, y, c.borderStyle.RightBottomCorner, c.foreground, c.parent.GetBackground())
+			termbox.SetCell(x, y, c.borderStyle.RightBottomCorner, c.foreground, c.base.GetBackground())
 		default:
-			termbox.SetCell(x, y, c.borderStyle.Right, c.foreground, c.parent.GetBackground())
+			termbox.SetCell(x, y, c.borderStyle.Right, c.foreground, c.base.GetBackground())
 		}
 
 		return true
 	default:
 		switch y {
 		case c.margin.Top:
-			termbox.SetCell(x, y, c.borderStyle.Top, c.foreground, c.parent.GetBackground())
+			termbox.SetCell(x, y, c.borderStyle.Top, c.foreground, c.base.GetBackground())
 			return true
 		case (c.height - c.margin.Bottom - 1):
-			termbox.SetCell(x, y, c.borderStyle.Bottom, c.foreground, c.parent.GetBackground())
+			termbox.SetCell(x, y, c.borderStyle.Bottom, c.foreground, c.base.GetBackground())
 			return true
 		}
 	}
