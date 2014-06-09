@@ -39,29 +39,6 @@ func (e *Element) SetSize(width, height int) {
 
 /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
 
-  SetMargin sets the margin (in terms of chars) for every bounds
-  of the window
-
-  Note : If an element has a specified x/y pos, the margin will not
-  be considered
-
-*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func (c *Container) SetMargin(s *Spacing) {
-	c.margin = s
-}
-
-/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
-
-  SetPadding sets the padding (in terms of chars) for every bounds
-  of the window
-
-*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
-func (c *Container) SetPadding(s *Spacing) {
-	c.padding = s
-}
-
-/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
-
   SetBackground changes background's color
 
 */ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
@@ -117,6 +94,9 @@ type Container struct {
 
 	margin  *Spacing
 	padding *Spacing
+
+	valign styles.Alignment
+	halign styles.Alignment
 
 	hasBorder   bool
 	borderStyle *styles.BorderStyle
@@ -221,6 +201,7 @@ func (c *Container) printPadding(x, y int) bool {
 		termbox.SetCell(x, y, ' ', c.foreground, termbox.ColorDefault)
 		return true
 	}
+
 	return false
 }
 
@@ -242,6 +223,39 @@ func (c *Container) SetBorder(style *styles.BorderStyle) {
 func (c *Container) RemoveBorder() {
 	c.hasBorder = false
 	c.borderStyle = nil
+}
+
+/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
+
+  SetMargin sets the margin (in terms of chars) for every bounds
+  of the window
+
+  Note : If an element has a specified x/y pos, the margin will not
+  be considered
+
+*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+func (c *Container) SetMargin(s *Spacing) {
+	c.margin = s
+}
+
+/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
+
+  SetPadding sets the padding (in terms of chars) for every bounds
+  of the window
+
+*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+func (c *Container) SetPadding(s *Spacing) {
+	c.padding = s
+}
+
+/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /*
+
+  SetAlignment sets the alignment of the container
+
+*/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+func (c *Container) SetAlignment(vertical styles.Alignment, horizontal styles.Alignment) {
+	c.valign = vertical
+	c.halign = horizontal
 }
 
 /*******************************************************************************

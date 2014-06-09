@@ -18,3 +18,15 @@ var (
 	BorderDashed      *BorderStyle = &BorderStyle{'|', '+', '-', '+', '|', '+', '-', '+'}
 	BorderTransparent *BorderStyle = &BorderStyle{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
 )
+
+// Alignement type (for a text or a widget)
+type Alignment uint8
+
+// Alignement possibilities (for text & widgets)
+const (
+	AlignCenter Alignment = iota
+	AlignLeft
+	AlignRight
+	AlignTop
+	AlignBottom
+)

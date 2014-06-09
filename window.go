@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/nsf/termbox-go"
 	"github.com/peekmo/termgo-widgets/colors"
+	"github.com/peekmo/termgo-widgets/styles"
 )
 
 /*
@@ -36,6 +37,9 @@ func NewWindow() *Window {
 
 	win.id = windowId
 	win.priority = -1
+
+	win.valign = styles.AlignTop
+	win.halign = styles.AlignLeft
 
 	win.foreground = colors.Default
 	win.background = colors.Default
