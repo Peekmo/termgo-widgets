@@ -1,4 +1,4 @@
-termgo-widgets [in progresse]
+termgo-widgets [in progress]
 ==============
 
 [![Build Status](https://travis-ci.org/Peekmo/termgo-widgets.svg?branch=master)](https://travis-ci.org/Peekmo/termgo-widgets)
